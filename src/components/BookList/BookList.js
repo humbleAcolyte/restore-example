@@ -3,13 +3,20 @@ import BookListItem from "../BookListItem";
 import { withBookstoreService } from "../hoc";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
-import { booksLoaded } from "../../actions";
+import { booksLoaded, booksRequested } from "../../actions";
 import Spinner from "../Spinner";
 
-const BookList = ({ books, loading, bookstoreService, booksLoaded }) => {
+const BookList = ({
+  books,
+  loading,
+  bookstoreService,
+  booksLoaded,
+  booksRequested,
+}) => {
   useEffect(() => {
+    booksRequested();
     bookstoreService.getBooks().then((data) => booksLoaded(data));
-  }, [bookstoreService, booksLoaded]);
+  }, [bookstoreService, booksLoaded, booksRequested]);
 
   if (loading) {
     return <Spinner />;
@@ -36,7 +43,7 @@ const mapStateToProps = ({ books, loading }) => {
 };
 
 const mapDispatchToProps = (dispatch) => {
-  return bindActionCreators({ booksLoaded }, dispatch);
+  return bindActionCreators({ booksLoaded, booksRequested }, dispatch);
 };
 
 export default withBookstoreService()(

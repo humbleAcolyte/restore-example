@@ -1,3 +1,9 @@
+const booksRequested = () => {
+  return {
+    type: "BOOKS_REQUESTED",
+  };
+};
+
 const booksLoaded = (newBooks) => {
   return {
     type: "BOOKS_LOADED",
@@ -5,4 +11,4 @@ const booksLoaded = (newBooks) => {
   };
 };
 
-export { booksLoaded };
+export { booksLoaded, booksRequested };
