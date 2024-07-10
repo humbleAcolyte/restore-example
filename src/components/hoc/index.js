@@ -1,3 +1,3 @@
 import withBookstoreService from "./withBookstoreService";
-
-export { withBookstoreService };
+import compose from "./compose";
+export { withBookstoreService, compose };

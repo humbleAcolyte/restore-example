@@ -1,28 +1,15 @@
 import React, { useEffect } from "react";
 import BookListItem from "../BookListItem";
-import { withBookstoreService } from "../hoc";
+import { withBookstoreService, compose } from "../hoc";
 import { connect } from "react-redux";
-import { bindActionCreators } from "redux";
-import * as booksActions from "../../actions";
+import { booksLoaded, booksRequested, booksError } from "../../actions";
 import Spinner from "../Spinner";
 import ErrorIndicator from "../ErrorIndicator";
 
-const BookList = ({
-  books,
-  loading,
-  error,
-  bookstoreService,
-  booksLoaded,
-  booksRequested,
-  booksError,
-}) => {
+const BookList = ({ books, loading, error, fetchBooks }) => {
   useEffect(() => {
-    booksRequested();
-    bookstoreService
-      .getBooks()
-      .then((data) => booksLoaded(data))
-      .catch((e) => booksError(e));
-  }, [bookstoreService, booksLoaded, booksRequested, booksError]);
+    fetchBooks();
+  }, [fetchBooks]);
 
   if (error) {
     return <ErrorIndicator />;
@@ -53,10 +40,20 @@ const mapStateToProps = ({ books, loading, error }) => {
   };
 };
 
-const mapDispatchToProps = (dispatch) => {
-  return bindActionCreators(booksActions, dispatch);
+const mapDispatchToProps = (dispatch, ownProps) => {
+  const { bookstoreService } = ownProps;
+  return {
+    fetchBooks: () => {
+      dispatch(booksRequested());
+      bookstoreService
+        .getBooks()
+        .then((data) => dispatch(booksLoaded(data)))
+        .catch((e) => dispatch(booksError(e)));
+    },
+  };
 };
 
-export default withBookstoreService()(
-  connect(mapStateToProps, mapDispatchToProps)(BookList),
-);
+export default compose(
+  withBookstoreService(),
+  connect(mapStateToProps, mapDispatchToProps),
+)(BookList);
