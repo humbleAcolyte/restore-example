@@ -4,12 +4,16 @@ import { withBookstoreService } from "../hoc";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import { booksLoaded } from "../../actions";
+import Spinner from "../Spinner";
 
-const BookList = ({ books, bookstoreService, booksLoaded }) => {
+const BookList = ({ books, loading, bookstoreService, booksLoaded }) => {
   useEffect(() => {
-    const books = bookstoreService.getBooks();
-    booksLoaded(books);
+    bookstoreService.getBooks().then((data) => booksLoaded(data));
   }, [bookstoreService, booksLoaded]);
+
+  if (loading) {
+    return <Spinner />;
+  }
 
   return (
     <ul>
@@ -24,9 +28,10 @@ const BookList = ({ books, bookstoreService, booksLoaded }) => {
   );
 };
 
-const mapStateToProps = ({ books }) => {
+const mapStateToProps = ({ books, loading }) => {
   return {
     books,
+    loading,
   };
 };
 
