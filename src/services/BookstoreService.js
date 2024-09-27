@@ -2,8 +2,27 @@ export default class BookstoreService {
   data = [
     {
       id: 1,
-      name: "Some Book",
-      author: "Some Author",
+      title: "The Wild Robot (Volume 1)",
+      author: "Peter Brown",
+      price: 3.65,
+      coverImage:
+        "https://m.media-amazon.com/images/I/91VsjBbwzkL._SL1500_.jpg",
+    },
+    {
+      id: 2,
+      title: "The God of the Woods: A Novel",
+      author: "Liz Moore",
+      price: 14.99,
+      coverImage:
+        "https://m.media-amazon.com/images/I/81-vBq87wrL._SL1500_.jpg",
+    },
+    {
+      id: 3,
+      title: "Melania",
+      author: "Melania Trump",
+      price: 28,
+      coverImage:
+        "https://m.media-amazon.com/images/I/419zn8-6gaL._SL1500_.jpg",
     },
   ];
 
